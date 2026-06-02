@@ -18,27 +18,28 @@ res.status(200).json(event)
 })
 
 
-router.get('/events',async (req,res)=>{
-    try{
-     const event = await Event.find()
+router.get('/events', async (req, res) => {
+  try {
+    const event = await Event.find()
+      .sort({ date: 1 })
+      .populate('postedBy', 'name')  // add this line
     
-     res.status(200).json(event)
-    }catch(err){
-    res.status(500).json({message : err.message})
-}
+    res.status(200).json(event)
+  } catch(err) {
+    res.status(500).json({ message: err.message })
+  }
 })
-
-router.get('/event/:id',async (req,res)=>{
-    const{id} = req.params
-    try{
-     const event = await Event.findById(id)
-     if(!event) return res.status(400).json({message : 'No event found'})
-     res.status(200).json(event)
-    }catch(err){
-    res.status(500).json({message : err.message})
-}
+router.get('/event/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const event = await Event.findById(id)
+      .populate('postedBy', 'name')  // add this line
+    if (!event) return res.status(400).json({ message: 'No event found' })
+    res.status(200).json(event)
+  } catch(err) {
+    res.status(500).json({ message: err.message })
+  }
 })
-
 router.post('/event/:id/comment',Valied, async (req,res)=>{
     const{id} = req.params
     const{text} = req.body
