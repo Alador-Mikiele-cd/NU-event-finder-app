@@ -3,13 +3,16 @@ const mongoose = require('mongoose')
 const Vote = require('../models/vote')
 const router = express.Router()
 const Valied = require('../middleware/user')
-
+const Event = require('../models/event')
 
 
 router.post('/vote',Valied,async (req,res)=>{
    const{event , type} = req.body
    try{
    const vote = await Vote.create({user: req.user.id,event , type})
+   await Event.findByIdAndUpdate(event, {
+      $inc: { [`votes.${type}`]: 1 }
+    })
    res.status(200).json(vote)
    }catch(err){
     if(err.code === 11000) return res.status(400).json({ message: 'Already voted' })
