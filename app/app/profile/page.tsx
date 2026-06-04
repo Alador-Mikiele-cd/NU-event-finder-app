@@ -7,24 +7,30 @@ import API from '@/lib/api'
 export default function Profile() {
   const [events, setEvents] = useState<any[]>([])
   const [user, setUser] = useState<any>(null)
+  const [ideasCount, setIdeasCount] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
     async function getData() {
       const token = localStorage.getItem('token')
 
-      const [eventsRes, userRes] = await Promise.all([
+      const [eventsRes, userRes , ideasRes] = await Promise.all([
         fetch(`${API}/api/events/user`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
         fetch(`${API}/api/user/me`, {
           headers: { Authorization: `Bearer ${token}` }
-        })
+        }),
+         fetch(`${API}/api/ideas/user`, {
+  headers: { Authorization: `Bearer ${token}` }
+})
+
       ])
 
       const eventsData = await eventsRes.json()
       const userData = await userRes.json()
-
+       const ideasData = await ideasRes.json()
+if (Array.isArray(ideasData)) setIdeasCount(ideasData.length)
       if (Array.isArray(eventsData)) setEvents(eventsData)
       setUser(userData)
     }
@@ -65,7 +71,7 @@ export default function Profile() {
             <p className="text-gray-400 text-xs">Events</p>
           </div>
           <div className="bg-white rounded-2xl p-3 text-center">
-            <p className="text-gray-800 font-bold text-lg">0</p>
+            <p className="text-gray-800 font-bold text-lg">{ideasCount}</p>
             <p className="text-gray-400 text-xs">Ideas</p>
           </div>
           <div className="bg-white rounded-2xl p-3 text-center">

@@ -97,5 +97,12 @@ router.post('/idea/:id/react', Valid, async (req, res) => {
   }
 })
 
-
+router.get('/ideas/user', Valid, async (req, res) => {
+  try {
+    const ideas = await Idea.find({ postedBy: req.user.id })
+    res.status(200).json(ideas)
+  } catch(err) {
+    res.status(500).json({ message: err.message })
+  }
+})
 module.exports = router
