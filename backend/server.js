@@ -18,5 +18,7 @@ mongoose
         .connect(process.env.MONGO_URI)
         .then(()=>{
             console.log('Mangodb connected succsesfuly')
-            app.listen(process.env.PORT , console.log('server is runing on 5000'))
+            app.listen(process.env.PORT || 5000, () => {
+  console.log('server is running')
+})
         })
