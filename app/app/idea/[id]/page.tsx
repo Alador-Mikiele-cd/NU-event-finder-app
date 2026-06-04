@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, use } from "react"
 import BottomNav from "@/components/BottomNav"
-
+import API from "@/lib/api"
 export default function IdeaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [event, setEvent] = useState<any>(null)
@@ -9,7 +9,7 @@ export default function IdeaPage({ params }: { params: Promise<{ id: string }> }
 
   useEffect(() => {
     async function getideas() {
-      const res = await fetch(`http://localhost:5000/api/idea/${id}`)
+      const res = await fetch(`${API}/api/idea/${id}`)
       const data = await res.json()
       setEvent(data)
       setLoading(false)
@@ -22,7 +22,7 @@ export default function IdeaPage({ params }: { params: Promise<{ id: string }> }
     const form = e.currentTarget
     const comment = (form.elements.namedItem('comment') as HTMLInputElement).value
     const token = localStorage.getItem('token')
-    const res = await fetch(`http://localhost:5000/api/idea/${id}/comment`, {
+    const res = await fetch(`${API}/api/idea/${id}/comment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ async function handleVote(type: 'vote' | 'interested' | 'wouldPay') {
   }
 
   if (type === 'vote') {
-    const res = await fetch(`http://localhost:5000/api/idea/${id}/vote`, {
+    const res = await fetch(`${API}/api/idea/${id}/vote`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` }
     })
@@ -57,7 +57,7 @@ async function handleVote(type: 'vote' | 'interested' | 'wouldPay') {
     if (!res.ok) return
     setEvent((prev: any) => ({ ...prev, votes: data.votes }))
   } else {
-    const res = await fetch(`http://localhost:5000/api/idea/${id}/react`, {
+    const res = await fetch(`${API}/api/idea/${id}/react`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

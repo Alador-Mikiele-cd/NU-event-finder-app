@@ -3,7 +3,7 @@ import BottomNav from '@/components/BottomNav'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import API from '@/lib/api'
 export default function Profile() {
   const [events, setEvents] = useState<any[]>([])
   const [user, setUser] = useState<any>(null)
@@ -14,10 +14,10 @@ export default function Profile() {
       const token = localStorage.getItem('token')
 
       const [eventsRes, userRes] = await Promise.all([
-        fetch('http://localhost:5000/api/events/user', {
+        fetch(`${API}/api/events/user`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        fetch('http://localhost:5000/api/user/me', {
+        fetch(`${API}/api/user/me`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ])

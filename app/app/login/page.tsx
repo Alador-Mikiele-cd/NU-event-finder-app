@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import useGuest from '@/hooks/useGuest'
+import API from "@/lib/api"
 export default function Logim(){
   useGuest()
     const[err , setErr] = useState('')
@@ -14,7 +15,7 @@ export default function Logim(){
         const email = (form.elements.namedItem('email') as HTMLInputElement).value
         const password = (form.elements.namedItem('password') as HTMLInputElement).value
 
-        const user = await fetch('http://localhost:5000/api/user/login',{
+        const user = await fetch(`${API}/api/user/login`,{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({email,password})

@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import BottomNav from "@/components/BottomNav"
-
+import API from "@/lib/api"
 export default function Vote() {
   const [totalIdeas, setTotalIdeas] = useState(0)
   const [trending, setTrending] = useState(0)
@@ -11,14 +11,14 @@ export default function Vote() {
 
   useEffect(() => {
     async function getStats() {
-      const res = await fetch('http://localhost:5000/api/ideas/stats')
+      const res = await fetch(`${API}/api/ideas/stats`)
       const data = await res.json()
       setTotalIdeas(data.total)
       setTrending(data.trending)
     }
 
     async function getIdeas() {
-      const res = await fetch('http://localhost:5000/api/ideas')
+      const res = await fetch(`${API}/api/ideas`)
       const data = await res.json()
       const sorted = [...data].sort((a, b) => b.votes - a.votes)
       setTopVoted(sorted)

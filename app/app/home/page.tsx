@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
-
+import API from '@/lib/api'
 export default function Home() {
   const [events, setEvents] = useState<any[]>([])
   const [filtered, setFiltered] = useState<any[]>([])
@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchEvents() {
-      const res = await fetch('http://localhost:5000/api/events')
+      const res = await fetch(`${API}/api/events`)
       const data = await res.json()
       setEvents(data)
       setFiltered(data)

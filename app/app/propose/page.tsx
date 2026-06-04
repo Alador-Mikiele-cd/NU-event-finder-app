@@ -2,7 +2,7 @@
 import BottomNav from "@/components/BottomNav"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-
+import API from "@/lib/api"
 export default function Propose() {
   const router = useRouter()
   const [from , setForm] = useState<'event' | 'idea'>('event')
@@ -28,7 +28,7 @@ export default function Propose() {
     const coverImageFile = (form.elements.namedItem('coverImage') as HTMLInputElement).files?.[0]
     if (coverImageFile) formData.append('coverImage', coverImageFile)
 
-    const event = await fetch('http://localhost:5000/api/event', {
+    const event = await fetch(`${API}/api/event`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -47,7 +47,7 @@ async function handleIdea(e: React.FormEvent<HTMLFormElement>) {
   const category = (form.elements.namedItem('category') as HTMLSelectElement).value
   const token = localStorage.getItem('token')
 
-  const res = await fetch('http://localhost:5000/api/idea', {
+  const res = await fetch(`${API}/api/idea`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

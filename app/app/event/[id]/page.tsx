@@ -2,7 +2,7 @@
 import BottomNav from '@/components/BottomNav'
 import { useEffect, useState, use } from "react"
 import { useRouter } from 'next/navigation'
-
+import API from '@/lib/api'
 export default function EventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const [event, setEvent] = useState<any>(null)
@@ -12,7 +12,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
 
   useEffect(() => {
     async function fetchEvent() {
-      const res = await fetch(`http://localhost:5000/api/event/${id}`)
+      const res = await fetch(`${API}/api/event/${id}`)
       const data = await res.json()
       setEvent(data)
       setVotes(data.votes)
@@ -23,7 +23,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
 
   async function handleVote(type: string) {
     const token = localStorage.getItem('token')
-    const res = await fetch('http://localhost:5000/api/vote', {
+    const res = await fetch(`${API}/api/vote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
     const form = e.currentTarget
     const comment = (form.elements.namedItem('comment') as HTMLInputElement).value
     const token = localStorage.getItem('token')
-    const res = await fetch(`http://localhost:5000/api/event/${id}/comment`, {
+    const res = await fetch(`${API}/api/event/${id}/comment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

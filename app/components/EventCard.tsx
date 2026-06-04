@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from "react"
-
+import API from '@/lib/api'
 type Event = {
   _id: string
   title: string
@@ -24,7 +24,7 @@ export default function EventCard({ event }: { event: Event }) {
    const [votes, setVotes] = useState(event.votes)
     async function handleVote(type:string) {
       const token = localStorage.getItem('token')
-      const vote = await fetch("http://localhost:5000/api/vote",{
+      const vote = await fetch(`${API}/api/vote`,{
         method:"POST",
         headers:{'Content-Type':"application/json" ,"Authorization" : `Bearer ${token}`},
         body:JSON.stringify({event:event._id,type})

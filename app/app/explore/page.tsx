@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import BottomNav from "@/components/BottomNav"
-
+import API from "@/lib/api"
 export default function Explore() {
   const [events, setEvents] = useState<any[]>([])
   const [ideas, setIdeas] = useState<any[]>([])
@@ -16,13 +16,13 @@ export default function Explore() {
 
   useEffect(() => {
     async function getevents() {
-      const res = await fetch('http://localhost:5000/api/events')
+      const res = await fetch(`${API}/api/events`)
       const data = await res.json()
       setEvents(data)
       setFilteredEvents(data)
     }
     async function getideas() {
-      const res = await fetch('http://localhost:5000/api/ideas')
+      const res = await fetch(`${API}/api/ideas`)
       const data = await res.json()
       setIdeas(data)
       setFilteredIdeas(data)
