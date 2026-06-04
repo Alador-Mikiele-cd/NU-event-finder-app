@@ -1,19 +1,16 @@
 const mongoose = require('mongoose')
 
 const voteSchema = new mongoose.Schema({
-  
   user: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User', 
     required: true 
   },
-  
   event: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Event', 
     required: true 
   },
-  
   type: {
     type: String,
     enum: [
@@ -26,7 +23,6 @@ const voteSchema = new mongoose.Schema({
     ],
     required: true
   },
-
 }, { timestamps: true })
 
 voteSchema.index({ user: 1, event: 1, type: 1 }, { unique: true })

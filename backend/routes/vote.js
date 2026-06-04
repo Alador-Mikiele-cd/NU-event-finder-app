@@ -6,18 +6,21 @@ const Valied = require('../middleware/user')
 const Event = require('../models/event')
 
 
-router.post('/vote',Valied,async (req,res)=>{
-   const{event , type} = req.body
-   try{
-   const vote = await Vote.create({user: req.user.id,event , type})
-   await Event.findByIdAndUpdate(event, {
+router.post('/vote', Valied, async (req, res) => {
+  const { event, type } = req.body
+  console.log('body:', req.body)
+  console.log('user:', req.user.id)
+  try {
+    const vote = await Vote.create({ user: req.user.id, event, type })
+    await Event.findByIdAndUpdate(event, {
       $inc: { [`votes.${type}`]: 1 }
     })
-   res.status(200).json(vote)
-   }catch(err){
-    if(err.code === 11000) return res.status(400).json({ message: 'Already voted' })
-    res.status(500).json({message : err.message})
-   }
+    res.status(200).json(vote)
+  } catch(err) {
+    console.log('error:', err.message)
+    if (err.code === 11000) return res.status(400).json({ message: 'Already voted' })
+    res.status(500).json({ message: err.message })
+  }
 })
 
 router.get('/votes/:eventId', async (req, res) => {

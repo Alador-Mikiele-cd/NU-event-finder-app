@@ -13,6 +13,7 @@ app.use(cors())
 app.use('/api/user' ,require('./routes/auth'))
 app.use('/api', require('./routes/event'))
 app.use('/api', require('./routes/vote'))
+app.use('/api', require('./routes/idea'))
 mongoose
         .connect(process.env.MONGO_URI)
         .then(()=>{
